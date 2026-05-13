@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/tnware/source-customer-thermometer/compare/v0.4.0...v0.5.0) (2026-05-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Docker image path, Python package import, and connector definitionId all change. No external consumers yet (only configured locally), so blast radius is the local Airbyte connection that hasn't been wired up.
+
+### Features
+
+* rename connector to source-customer-thermometer ([6bc8353](https://github.com/tnware/source-customer-thermometer/commit/6bc83538d8ef78754c7fff58d36131986a8c5b35))
+
 ## [Unreleased]
 
 > **Repo + package renamed to `source-customer-thermometer`** (was
