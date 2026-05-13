@@ -1,14 +1,5 @@
 # Changelog
 
-## [Unreleased]
-
-> **Repo + package renamed to `source-customer-thermometer`** (was
-> `source-ct-api`). New Docker image path:
-> `ghcr.io/tnware/source-customer-thermometer`. The old path
-> (`ghcr.io/tnware/source-ct-api:0.4.0` and earlier) remains pullable
-> for anything pinned to it. Release-please will format this into a
-> proper entry on the next release cut.
-
 ## [0.4.0] — 2026-05-13
 
 ### Fixed
