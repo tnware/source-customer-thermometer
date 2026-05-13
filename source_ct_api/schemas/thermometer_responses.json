@@ -3,21 +3,66 @@
   "type": "object",
   "additionalProperties": true,
   "properties": {
-    "response_id":       { "type": ["integer", "null"] },
-    "response_date":     { "type": ["string",  "null"], "format": "date-time" },
-    "response":          { "type": ["string",  "null"] },
-    "temperature_id":    { "type": ["integer", "null"] },
-    "recipient_email":   { "type": ["string",  "null"] },
-    "first_name":        { "type": ["string",  "null"] },
-    "last_name":         { "type": ["string",  "null"] },
-    "company":           { "type": ["string",  "null"] },
-    "ticket_ref":        { "type": ["string",  "null"] },
-    "technician_name":   { "type": ["string",  "null"] },
-    "ticket_subject":    { "type": ["string",  "null"] },
-    "comment":           { "type": ["string",  "null"] },
-    "blast_id":          { "type": ["integer", "null"] },
-    "thermometer_id":    { "type": ["integer", "null"] },
-    "response_bounced":  { "type": ["boolean", "null"] },
-    "comment_hidden":    { "type": ["boolean", "null"] }
+    "response_id": {
+      "type": ["integer", "null"],
+      "description": "CustomerThermometer-assigned response ID. Primary key; records with NULL or zero are dropped at source."
+    },
+    "response_date": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "airbyte_type": "timestamp_with_timezone",
+      "description": "When the respondent clicked the survey. Cursor field for incremental syncs."
+    },
+    "response": {
+      "type": ["string", "null"],
+      "description": "The survey rating text (e.g. 'Gold', 'Green', 'Yellow', 'Red')."
+    },
+    "temperature_id": {
+      "type": ["integer", "null"],
+      "description": "Numeric rating: 1 Gold, 2 Green, 3 Yellow, 4 Red."
+    },
+    "recipient_email": {
+      "type": ["string", "null"],
+      "description": "End-customer email the survey was sent to."
+    },
+    "first_name": {
+      "type": ["string", "null"]
+    },
+    "last_name": {
+      "type": ["string", "null"]
+    },
+    "company": {
+      "type": ["string", "null"]
+    },
+    "ticket_ref": {
+      "type": ["string", "null"],
+      "description": "Maps to Zendesk ticket id via the custom_1 field on the survey blast."
+    },
+    "technician_name": {
+      "type": ["string", "null"],
+      "description": "Maps to the technician's display name via the custom_2 field on the survey blast. Used downstream to join CSAT to dim_technician."
+    },
+    "ticket_subject": {
+      "type": ["string", "null"],
+      "description": "Maps to the Zendesk ticket subject via the custom_3 field."
+    },
+    "comment": {
+      "type": ["string", "null"],
+      "description": "Optional free-text comment the respondent added with their rating."
+    },
+    "blast_id": {
+      "type": ["integer", "null"]
+    },
+    "thermometer_id": {
+      "type": ["integer", "null"]
+    },
+    "response_bounced": {
+      "type": ["boolean", "null"],
+      "description": "True if the survey email bounced. Excluded from CSAT downstream."
+    },
+    "comment_hidden": {
+      "type": ["boolean", "null"],
+      "description": "True if a moderator hid the comment in the CT admin UI."
+    }
   }
 }

@@ -2,6 +2,27 @@
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-05-13
+
+### Added
+- **Pytest suite** (21 tests) covering `_validate_start_date` (valid /
+  future-rejected / garbage-rejected / None-rejected), `_map_fields`
+  (full row, boolean coercions, response_id zero/missing/garbage,
+  `_int` helper), `get_updated_state` cursor logic, and `read_records`
+  (happy path, empty response, **10k cap raises**, non-XML raises).
+- CI gate: `image.yml` now runs `pytest` in a `test` job that the
+  `build` job depends on. Failing tests block the image push.
+- `[project.optional-dependencies] dev = ["pytest>=7.0", "responses>=0.23"]`
+  in pyproject.toml.
+
+### Changed
+- **Enriched `thermometer_responses.json` schema**: every field has a
+  `description`; `response_date` uses `format: date-time` +
+  `airbyte_type: timestamp_with_timezone` so Airbyte's typed
+  destination creates a `TIMESTAMPTZ` Postgres column instead of `TEXT`.
+- Documented the custom-field semantics: `custom_1 → ticket_ref`,
+  `custom_2 → technician_name`, `custom_3 → ticket_subject`.
+
 ## [0.2.0] — 2026-05-13
 
 ### Changed
