@@ -49,7 +49,7 @@ frequently or push CustomerThermometer to support pagination.
 ## Build + push
 
 ```bash
-docker build -t ghcr.io/powercts/source-ct-api:dev .
+docker build -t ghcr.io/tnware/source-ct-api:dev .
 ```
 
 CI in `.github/workflows/image.yml` builds and pushes to ghcr.io on
@@ -88,8 +88,8 @@ In the Airbyte UI:
 
 1. **Settings → Sources → New connector**
 2. **Add a new Docker connector**
-3. Image name: `ghcr.io/powercts/source-ct-api`
-4. Image tag: a published tag (see [Releases](https://github.com/PowerCTS/source-ct-api/releases))
+3. Image name: `ghcr.io/tnware/source-ct-api`
+4. Image tag: a published tag (see [Releases](https://github.com/tnware/source-ct-api/releases))
 
 ## CHANGELOG
 

@@ -3,8 +3,8 @@ data:
   name: "CustomerThermometer API"
   definitionId: "source-ct-api"
   connectorType: source
-  dockerRepository: "ghcr.io/powercts/source-ct-api"
-  dockerImageTag: "0.3.0"
+  dockerRepository: "ghcr.io/tnware/source-ct-api"
+  dockerImageTag: "0.4.0"
   documentationUrl: ""
   releaseStage: custom
   license: MIT

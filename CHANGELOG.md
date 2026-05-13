@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-05-13
+
+### Fixed
+- `metadata.yaml` `dockerRepository` corrected from
+  `ghcr.io/powercts/source-ct-api` to `ghcr.io/tnware/source-ct-api`
+  to match the actual GHCR location (the GHA workflow uses
+  `github.repository_owner` which resolves to `tnware`). Published
+  v0.3.0 images landed at the correct path; only the metadata pointer
+  was wrong.
+- README references updated to the correct GHCR path and the correct
+  GitHub repo URL.
+
 ## [0.3.0] — 2026-05-13
 
 ### Added
