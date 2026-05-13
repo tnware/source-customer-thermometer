@@ -15,7 +15,7 @@ from .streams import ThermometerResponses, _CT_API_URL
 log = logging.getLogger(__name__)
 
 
-class SourceCtApi(AbstractSource):
+class SourceCustomerThermometer(AbstractSource):
     """Airbyte source connector for the CustomerThermometer API."""
 
     def check_connection(self, logger, config: Mapping[str, Any]) -> Tuple[bool, Any]:

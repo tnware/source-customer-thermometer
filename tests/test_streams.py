@@ -8,7 +8,7 @@ import responses
 
 from airbyte_cdk.models import SyncMode
 
-from source_ct_api.streams import (
+from source_customer_thermometer.streams import (
     ThermometerResponses,
     _map_fields,
     _validate_start_date,

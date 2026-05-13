@@ -1,4 +1,4 @@
-# source-ct-api
+# source-customer-thermometer
 
 Airbyte custom source connector for the [CustomerThermometer](https://www.customerthermometer.com/) CSAT API.
 
@@ -49,7 +49,7 @@ frequently or push CustomerThermometer to support pagination.
 ## Build + push
 
 ```bash
-docker build -t ghcr.io/tnware/source-ct-api:dev .
+docker build -t ghcr.io/tnware/source-customer-thermometer:dev .
 ```
 
 CI in `.github/workflows/image.yml` builds and pushes to ghcr.io on
@@ -59,16 +59,16 @@ push to main and on tags.
 
 ```bash
 # Spec
-python -m source_ct_api spec
+python -m source_customer_thermometer spec
 
 # Connection check
-python -m source_ct_api check --config /path/to/secrets/config.json
+python -m source_customer_thermometer check --config /path/to/secrets/config.json
 
 # Catalog discovery
-python -m source_ct_api discover --config /path/to/secrets/config.json
+python -m source_customer_thermometer discover --config /path/to/secrets/config.json
 
 # Read records
-python -m source_ct_api read \
+python -m source_customer_thermometer read \
   --config /path/to/secrets/config.json \
   --catalog /path/to/integration_tests/configured_catalog.json
 ```
@@ -88,8 +88,8 @@ In the Airbyte UI:
 
 1. **Settings → Sources → New connector**
 2. **Add a new Docker connector**
-3. Image name: `ghcr.io/tnware/source-ct-api`
-4. Image tag: a published tag (see [Releases](https://github.com/tnware/source-ct-api/releases))
+3. Image name: `ghcr.io/tnware/source-customer-thermometer`
+4. Image tag: a published tag (see [Releases](https://github.com/tnware/source-customer-thermometer/releases))
 
 ## Releases & commit style
 

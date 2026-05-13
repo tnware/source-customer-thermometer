@@ -3,7 +3,7 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "source-ct-api"
+name = "source-customer-thermometer"
 version = "0.4.0"
 description = "Airbyte source connector for the CustomerThermometer API"
 requires-python = ">=3.10"
@@ -19,11 +19,11 @@ dev = [
 ]
 
 [project.scripts]
-source-ct-api = "source_ct_api.__main__:run"
+source-customer-thermometer = "source_customer_thermometer.__main__:run"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["source_ct_api*"]
+include = ["source_customer_thermometer*"]
 
 [tool.setuptools.package-data]
-"source_ct_api" = ["spec.yaml", "schemas/*.json"]
+"source_customer_thermometer" = ["spec.yaml", "schemas/*.json"]

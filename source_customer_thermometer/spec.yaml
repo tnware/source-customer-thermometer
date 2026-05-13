@@ -1,4 +1,4 @@
-documentationUrl: https://docs.airbyte.com/integrations/sources/ct-api
+documentationUrl: https://docs.airbyte.com/integrations/sources/customer-thermometer
 connectionSpecification:
   $schema: http://json-schema.org/draft-07/schema#
   title: CustomerThermometer API Source Spec

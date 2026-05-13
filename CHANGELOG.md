@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+> **Repo + package renamed to `source-customer-thermometer`** (was
+> `source-ct-api`). New Docker image path:
+> `ghcr.io/tnware/source-customer-thermometer`. The old path
+> (`ghcr.io/tnware/source-ct-api:0.4.0` and earlier) remains pullable
+> for anything pinned to it. Release-please will format this into a
+> proper entry on the next release cut.
+
 ## [0.4.0] — 2026-05-13
 
 ### Fixed
@@ -47,7 +54,7 @@
 - XML parse errors are now wrapped in a `RuntimeError` with a clear
   message instead of bubbling up as opaque `ParseError`.
 - Bumped `dockerRepository` in metadata.yaml to
-  `ghcr.io/powercts/source-ct-api`.
+  `ghcr.io/powercts/source-ct-api` (corrected to `tnware/source-ct-api` in v0.4.0).
 
 ## [0.1.0] — earlier
 - Initial extraction from the PowerCTS reporting monorepo.

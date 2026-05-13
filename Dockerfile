@@ -7,6 +7,6 @@ COPY . ./
 RUN pip install --no-cache-dir .
 
 # Required by the Airbyte v2 workload runner
-ENV AIRBYTE_ENTRYPOINT="python -m source_ct_api"
+ENV AIRBYTE_ENTRYPOINT="python -m source_customer_thermometer"
 
-ENTRYPOINT ["python", "-m", "source_ct_api"]
+ENTRYPOINT ["python", "-m", "source_customer_thermometer"]
