@@ -91,6 +91,28 @@ In the Airbyte UI:
 3. Image name: `ghcr.io/tnware/source-ct-api`
 4. Image tag: a published tag (see [Releases](https://github.com/tnware/source-ct-api/releases))
 
+## Releases & commit style
+
+Releases are automated by [release-please](https://github.com/googleapis/release-please).
+Commit to `main` using [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: add new Foo endpoint        → minor bump (0.4.0 → 0.5.0)
+fix:  handle null api_key         → patch bump (0.4.0 → 0.4.1)
+chore: bump action versions       → no release (hidden from changelog)
+feat!: drop deprecated cursor     → major bump (note the !)
+```
+
+Release-please watches `main` and maintains a rolling **Release PR** that:
+- Bumps `pyproject.toml` `version` and `metadata.yaml` `dockerImageTag`
+  in lockstep
+- Appends a categorized entry to `CHANGELOG.md`
+- When merged, cuts a `vX.Y.Z` tag and a GitHub Release. The
+  `image.yml` workflow picks up the tag and builds + pushes the
+  versioned image.
+
+Don't hand-edit versions or the CHANGELOG — release-please owns those.
+
 ## CHANGELOG
 
 See [CHANGELOG.md](CHANGELOG.md).
