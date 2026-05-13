@@ -1,0 +1,37 @@
+documentationUrl: https://docs.airbyte.com/integrations/sources/ct-api
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: CustomerThermometer API Source Spec
+  type: object
+  required:
+    - api_key
+    - start_date
+  additionalProperties: true
+  properties:
+    api_key:
+      type: string
+      title: API Key
+      description: >
+        CustomerThermometer API key. Found in the CT admin panel under
+        Account Settings > API. Stored as THERMOM_API_KEY in .env.
+      airbyte_secret: true
+      order: 0
+    start_date:
+      type: string
+      title: Start Date
+      description: >
+        ISO 8601 date (YYYY-MM-DD). ThermometerResponses will be fetched
+        starting from this date on the first sync. Use the earliest date
+        for which CT data exists.
+
+        IMPORTANT: The CustomerThermometer API caps each call at 10,000
+        records and does not support pagination. If your first sync covers
+        a date range with more than 10,000 responses the sync will fail
+        loudly (better than silently losing data). To recover, advance
+        start_date so each window is below the cap, sync, then back off
+        start_date and run again. Once the cursor has caught up, ongoing
+        incremental syncs will stay well under the cap.
+      pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+      examples:
+        - "2025-07-01"
+      order: 1

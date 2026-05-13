@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "response_id":       { "type": ["integer", "null"] },
+    "response_date":     { "type": ["string",  "null"], "format": "date-time" },
+    "response":          { "type": ["string",  "null"] },
+    "temperature_id":    { "type": ["integer", "null"] },
+    "recipient_email":   { "type": ["string",  "null"] },
+    "first_name":        { "type": ["string",  "null"] },
+    "last_name":         { "type": ["string",  "null"] },
+    "company":           { "type": ["string",  "null"] },
+    "ticket_ref":        { "type": ["string",  "null"] },
+    "technician_name":   { "type": ["string",  "null"] },
+    "ticket_subject":    { "type": ["string",  "null"] },
+    "comment":           { "type": ["string",  "null"] },
+    "blast_id":          { "type": ["integer", "null"] },
+    "thermometer_id":    { "type": ["integer", "null"] },
+    "response_bounced":  { "type": ["boolean", "null"] },
+    "comment_hidden":    { "type": ["boolean", "null"] }
+  }
+}

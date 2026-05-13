@@ -1,0 +1,22 @@
+metadataSpecVersion: "1.0"
+data:
+  name: "CustomerThermometer API"
+  definitionId: "source-ct-api"
+  connectorType: source
+  dockerRepository: "ghcr.io/powercts/source-ct-api"
+  dockerImageTag: "0.2.0"
+  documentationUrl: ""
+  releaseStage: custom
+  license: MIT
+  supportLevel: community
+  connectorSubtype: api
+  supportedSyncModes:
+    - incremental
+    - full_refresh
+  streams:
+    - name: thermometer_responses
+      defaultCursorField: ["response_date"]
+      sourceDefinedCursor: true
+      supportedSyncModes:
+        - incremental
+        - full_refresh
