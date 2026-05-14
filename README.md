@@ -6,7 +6,7 @@ Airbyte custom source connector for the [CustomerThermometer](https://www.custom
 
 | Stream                  | Sync mode               | Notes                                                                                  |
 | ----------------------- | ----------------------- | -------------------------------------------------------------------------------------- |
-| `thermometer_responses` | incremental + full      | Survey responses. Incremental by `response_date`. Single API call per sync.            |
+| `thermometer_responses` | incremental + full      | Survey responses. Incremental by `response_date`; sync window is walked in 7-day `fromDate`/`toDate` chunks. |
 
 ## Authentication
 
