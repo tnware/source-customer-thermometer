@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/tnware/source-customer-thermometer/compare/v0.5.1...v0.5.2) (2026-05-14)
+
+
+### Features
+
+* expose all twelve CT custom fields ([#6](https://github.com/tnware/source-customer-thermometer/issues/6)) ([a2c137c](https://github.com/tnware/source-customer-thermometer/commit/a2c137c402541e54e9b362f4531a86e705b89fb5))
+
 ## [0.5.1](https://github.com/tnware/source-customer-thermometer/compare/v0.5.0...v0.5.1) (2026-05-14)
 
 

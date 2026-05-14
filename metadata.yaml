@@ -4,7 +4,7 @@ data:
   definitionId: source-customer-thermometer
   connectorType: source
   dockerRepository: ghcr.io/tnware/source-customer-thermometer
-  dockerImageTag: 0.5.1
+  dockerImageTag: 0.5.2
   documentationUrl: ''
   releaseStage: custom
   license: MIT
