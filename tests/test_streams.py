@@ -109,6 +109,16 @@ class TestMapFields:
         out = _map_fields({"response_id": "1", "blast_id": "not-a-number"})
         assert out["blast_id"] is None
 
+    def test_all_twelve_custom_fields_pass_through(self):
+        """CT supports custom_1..custom_12 per the sendEmail API. All
+        should be emitted verbatim regardless of which slots a given
+        operator actually populates."""
+        raw = {"response_id": "1"}
+        raw.update({f"custom_{i}": f"v{i}" for i in range(1, 13)})
+        out = _map_fields(raw)
+        for i in range(1, 13):
+            assert out[f"custom_{i}"] == f"v{i}"
+
 
 # ----------------------------------------------------------------------
 # get_updated_state

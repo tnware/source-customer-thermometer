@@ -46,6 +46,42 @@
       "type": ["string", "null"],
       "description": "Free-form custom field 3 from the survey blast."
     },
+    "custom_4": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 4 from the survey blast."
+    },
+    "custom_5": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 5 from the survey blast."
+    },
+    "custom_6": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 6 from the survey blast."
+    },
+    "custom_7": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 7 from the survey blast."
+    },
+    "custom_8": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 8 from the survey blast."
+    },
+    "custom_9": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 9 from the survey blast."
+    },
+    "custom_10": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 10 from the survey blast."
+    },
+    "custom_11": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 11 from the survey blast."
+    },
+    "custom_12": {
+      "type": ["string", "null"],
+      "description": "Free-form custom field 12 from the survey blast."
+    },
     "comment": {
       "type": ["string", "null"],
       "description": "Optional free-text comment the respondent added with their rating."
