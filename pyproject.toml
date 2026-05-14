@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "source-customer-thermometer"
-version = "0.5.2"
+version = "0.5.3"
 description = "Airbyte source connector for the CustomerThermometer API"
 requires-python = ">=3.10"
 dependencies = [
