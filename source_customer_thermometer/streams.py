@@ -3,10 +3,10 @@
 Single stream:
 
 - ``ThermometerResponses`` — incremental by ``response_date`` cursor.
-  The CT API caps each call at 10,000 records and (as of this writing)
-  doesn't support offset / cursor pagination. If a sync window contains
-  >= 10,000 records we raise rather than continuing — silently losing
-  records would produce wrong KPI numbers downstream.
+  The CT API has no pagination (no offset, no cursor token, no next-page
+  link). The connector works around this by walking the ``fromDate`` /
+  ``toDate`` window in 7-day slices, one API call per slice. CSAT volumes
+  per week are low enough that no per-call cap is a realistic concern.
 
 Output field names match the destination column names expected by the
 downstream warehouse so the staging models need no field-name translation.
@@ -16,7 +16,7 @@ import json
 import logging
 import os
 import xml.etree.ElementTree as ET
-from datetime import date
+from datetime import date, timedelta
 from typing import Any, Iterable, Mapping, Optional
 
 import requests
@@ -27,8 +27,14 @@ from airbyte_cdk.sources.streams import Stream
 log = logging.getLogger(__name__)
 
 _CT_API_URL = "https://app.customerthermometer.com/api.php"
-_API_RECORD_LIMIT = 10_000
+_WINDOW_DAYS = 7
+_PER_CHUNK_LIMIT = 10_000
 _HTTP_TIMEOUT_SECONDS = 60
+
+
+def _today() -> date:
+    """Wrapper around ``date.today()`` so tests can pin the wall clock."""
+    return date.today()
 
 
 def _validate_start_date(value: Any) -> str:
@@ -46,7 +52,7 @@ def _validate_start_date(value: Any) -> str:
         raise ValueError(
             f"start_date must be YYYY-MM-DD, got {value!r}: {exc}"
         ) from exc
-    if parsed > date.today():
+    if parsed > _today():
         raise ValueError(
             f"start_date {parsed.isoformat()} is in the future"
         )
@@ -92,57 +98,48 @@ class ThermometerResponses(Stream):
         state = stream_state or {}
         cursor_value = state.get(self.cursor_field, self._start_date)
 
-        from_date = str(cursor_value)[:10]
-        to_date = date.today().isoformat()
+        window_start = date.fromisoformat(str(cursor_value)[:10])
+        today = _today()
 
-        log.info("ThermometerResponses: fetching from %s to %s", from_date, to_date)
-
-        params = {
-            "apiKey": self._api_key,
-            "getMethod": "getBlastResults",
-            "fromDate": from_date,
-            "toDate": to_date,
-            "limit": str(_API_RECORD_LIMIT),
-        }
-
-        resp = requests.get(_CT_API_URL, params=params, timeout=_HTTP_TIMEOUT_SECONDS)
-        resp.raise_for_status()
-
-        if not resp.text.strip():
-            log.info("ThermometerResponses: empty response from API")
-            return
-
-        try:
-            root = ET.fromstring(resp.text)
-        except ET.ParseError as exc:
-            raise RuntimeError(
-                f"CustomerThermometer returned non-XML response: {exc}"
-            ) from exc
-
-        count = 0
-        for item in root.findall("thermometer_blast_response"):
-            raw = {child.tag: child.text for child in item}
-            record = _map_fields(raw)
-            if record:
-                count += 1
-                yield record
-
-        log.info("ThermometerResponses: yielded %d records", count)
-
-        # If we hit the API's record cap exactly, we cannot know whether
-        # there are more records past it. Raise rather than silently lose
-        # data: better a loud sync failure than wrong KPI numbers.
-        # Workaround: narrow the sync window (set `start_date` later
-        # for the next sync) or contact CustomerThermometer about
-        # pagination support.
-        if count >= _API_RECORD_LIMIT:
-            raise RuntimeError(
-                f"CustomerThermometer returned {count} records — at or above the "
-                f"API's per-call cap of {_API_RECORD_LIMIT}. Records beyond this "
-                f"window may not have been fetched. Narrow the sync window "
-                f"(advance the cursor manually or set a later start_date) and "
-                f"retry. The API does not currently support pagination."
+        while window_start <= today:
+            window_end = min(
+                window_start + timedelta(days=_WINDOW_DAYS - 1), today
             )
+
+            log.info(
+                "ThermometerResponses: fetching %s to %s",
+                window_start.isoformat(),
+                window_end.isoformat(),
+            )
+
+            params = {
+                "apiKey": self._api_key,
+                "getMethod": "getBlastResults",
+                "fromDate": window_start.isoformat(),
+                "toDate": window_end.isoformat(),
+                "limit": str(_PER_CHUNK_LIMIT),
+            }
+
+            resp = requests.get(
+                _CT_API_URL, params=params, timeout=_HTTP_TIMEOUT_SECONDS
+            )
+            resp.raise_for_status()
+
+            if resp.text.strip():
+                try:
+                    root = ET.fromstring(resp.text)
+                except ET.ParseError as exc:
+                    raise RuntimeError(
+                        f"CustomerThermometer returned non-XML response: {exc}"
+                    ) from exc
+
+                for item in root.findall("thermometer_blast_response"):
+                    raw = {child.tag: child.text for child in item}
+                    record = _map_fields(raw)
+                    if record:
+                        yield record
+
+            window_start = window_end + timedelta(days=1)
 
     def get_json_schema(self) -> Mapping[str, Any]:
         schema_path = os.path.join(

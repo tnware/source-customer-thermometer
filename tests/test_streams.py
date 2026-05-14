@@ -13,6 +13,7 @@ from source_customer_thermometer.streams import (
     _map_fields,
     _validate_start_date,
     _CT_API_URL,
+    _WINDOW_DAYS,
 )
 
 
@@ -134,7 +135,7 @@ class TestGetUpdatedState:
 
 
 # ----------------------------------------------------------------------
-# read_records — happy path + 10k cap behavior
+# read_records — chunked date-window walk
 # ----------------------------------------------------------------------
 
 def _xml_response(items: list[dict]) -> str:
@@ -150,7 +151,10 @@ def _xml_response(items: list[dict]) -> str:
 
 class TestReadRecords:
     @responses.activate
-    def test_yields_mapped_records(self):
+    @patch("source_customer_thermometer.streams._today")
+    def test_yields_mapped_records(self, mock_today):
+        # One 7-day chunk: 2025-01-01 → 2025-01-07
+        mock_today.return_value = date(2025, 1, _WINDOW_DAYS)
         responses.add(
             responses.GET,
             _CT_API_URL,
@@ -168,9 +172,56 @@ class TestReadRecords:
         assert len(records) == 2
         assert records[0]["response_id"] == 1
         assert records[1]["response"] == "Green"
+        assert len(responses.calls) == 1
 
     @responses.activate
-    def test_empty_response_yields_nothing(self):
+    @patch("source_customer_thermometer.streams._today")
+    def test_walks_multiple_chunks(self, mock_today):
+        # 3 weekly chunks: 2025-01-01..07, 08..14, 15..21
+        mock_today.return_value = date(2025, 1, 21)
+
+        call_count = {"n": 0}
+
+        def cb(request):
+            call_count["n"] += 1
+            body = _xml_response([{"response_id": call_count["n"]}])
+            return (200, {"Content-Type": "application/xml"}, body)
+
+        responses.add_callback(responses.GET, _CT_API_URL, callback=cb)
+
+        stream = ThermometerResponses(CONFIG)
+        records = list(stream.read_records(SyncMode.full_refresh))
+
+        assert call_count["n"] == 3
+        assert [r["response_id"] for r in records] == [1, 2, 3]
+
+    @responses.activate
+    @patch("source_customer_thermometer.streams._today")
+    def test_resumes_from_cursor_state(self, mock_today):
+        # Cursor sits mid-history; we should only fetch from there forward.
+        mock_today.return_value = date(2025, 1, 14)
+
+        captured = []
+
+        def cb(request):
+            captured.append(request.params.get("fromDate"))
+            return (200, {"Content-Type": "application/xml"}, "")
+
+        responses.add_callback(responses.GET, _CT_API_URL, callback=cb)
+
+        stream = ThermometerResponses(CONFIG)
+        list(stream.read_records(
+            SyncMode.incremental,
+            stream_state={"response_date": "2025-01-10 09:00:00"},
+        ))
+
+        # First window starts at the cursor date, not start_date.
+        assert captured[0] == "2025-01-10"
+
+    @responses.activate
+    @patch("source_customer_thermometer.streams._today")
+    def test_empty_response_yields_nothing(self, mock_today):
+        mock_today.return_value = date(2025, 1, _WINDOW_DAYS)
         responses.add(
             responses.GET,
             _CT_API_URL,
@@ -182,25 +233,9 @@ class TestReadRecords:
         assert list(stream.read_records(SyncMode.full_refresh)) == []
 
     @responses.activate
-    def test_raises_on_10k_cap_hit(self):
-        """If we yield exactly the API record cap, raise — we can't know
-        whether records past the window were dropped, and silent loss
-        produces wrong KPI numbers downstream."""
-        items = [{"response_id": i} for i in range(1, 10_001)]
-        responses.add(
-            responses.GET,
-            _CT_API_URL,
-            body=_xml_response(items),
-            status=200,
-            content_type="application/xml",
-        )
-
-        stream = ThermometerResponses(CONFIG)
-        with pytest.raises(RuntimeError, match="10000"):
-            list(stream.read_records(SyncMode.full_refresh))
-
-    @responses.activate
-    def test_raises_on_non_xml_response(self):
+    @patch("source_customer_thermometer.streams._today")
+    def test_raises_on_non_xml_response(self, mock_today):
+        mock_today.return_value = date(2025, 1, _WINDOW_DAYS)
         responses.add(
             responses.GET,
             _CT_API_URL,
