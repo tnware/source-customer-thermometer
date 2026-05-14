@@ -177,15 +177,24 @@ def _map_fields(raw: dict) -> Optional[dict]:
         "first_name":       raw.get("first_name"),
         "last_name":        raw.get("last_name"),
         "company":          raw.get("company"),
-        # CustomerThermometer exposes three free-form custom fields per
-        # blast (custom1/custom2/custom3 on sendEmail; emitted as
-        # custom_1/custom_2/custom_3 in the getBlastResults XML). Their
+        # CustomerThermometer exposes twelve free-form custom fields per
+        # blast (custom1..custom12 on sendEmail; emitted as
+        # custom_1..custom_12 in the getBlastResults XML). Their
         # semantics are configured per-account in the CT admin UI, so
         # the connector passes them through raw. Downstream consumers
         # are responsible for naming them.
         "custom_1":         raw.get("custom_1"),
         "custom_2":         raw.get("custom_2"),
         "custom_3":         raw.get("custom_3"),
+        "custom_4":         raw.get("custom_4"),
+        "custom_5":         raw.get("custom_5"),
+        "custom_6":         raw.get("custom_6"),
+        "custom_7":         raw.get("custom_7"),
+        "custom_8":         raw.get("custom_8"),
+        "custom_9":         raw.get("custom_9"),
+        "custom_10":        raw.get("custom_10"),
+        "custom_11":        raw.get("custom_11"),
+        "custom_12":        raw.get("custom_12"),
         "comment":          raw.get("comment"),
         "blast_id":         _int(raw.get("blast_id")),
         "thermometer_id":   _int(raw.get("thermometer_id")),
