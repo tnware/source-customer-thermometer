@@ -21,30 +21,15 @@ API key, found in **CT admin panel → Account Settings → API**.
 
 ## API behavior worth knowing
 
-The CustomerThermometer API caps each call at **10,000 records** and does
-not (as of this writing) support pagination — no offset, no cursor token,
-no `next_page` link. This is upstream behavior, not something the
-connector can work around.
+The CustomerThermometer API has no pagination — no offset, no cursor
+token, no `next_page` link. The connector works around this by walking
+the `fromDate` / `toDate` window in 7-day slices, one API call per
+slice, advancing from `start_date` (or the last cursor value, on
+incremental syncs) up to today.
 
-### How this connector handles the cap
-
-If a single sync window returns >= 10,000 records, the connector **raises
-and fails the sync**. The alternative (silently emitting only the first
-10,000) would produce wrong KPI numbers downstream.
-
-### How to recover from a hit cap
-
-Most likely scenario: your first sync covers a long enough history to
-exceed the cap.
-
-1. Lower `start_date` so the window is smaller (e.g. one quarter at a
-   time). Sync, let the cursor advance.
-2. Once caught up, ongoing incremental syncs should stay well under the
-   cap (a CSAT response stream is rarely high-volume).
-
-If you regularly hit the cap on a steady-state incremental sync (i.e.
-more than 10,000 responses between syncs), you'd need to sync more
-frequently or push CustomerThermometer to support pagination.
+CSAT response volumes are low enough that a weekly slice stays well
+under any practical per-call cap. Each slice is independent, so syncs
+resume cleanly from wherever the cursor last landed.
 
 ## Build + push
 
