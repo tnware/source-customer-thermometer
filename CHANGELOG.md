@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/tnware/source-customer-thermometer/compare/v0.5.2...v0.5.3) (2026-05-14)
+
+
+### Bug Fixes
+
+* version-tag the connector image on release ([#8](https://github.com/tnware/source-customer-thermometer/issues/8)) ([2568a0c](https://github.com/tnware/source-customer-thermometer/commit/2568a0c4b2ee092105666e5a86ad7b3809bdef78))
+
 ## [0.5.2](https://github.com/tnware/source-customer-thermometer/compare/v0.5.1...v0.5.2) (2026-05-14)
 
 
