@@ -34,17 +34,17 @@
     "company": {
       "type": ["string", "null"]
     },
-    "ticket_ref": {
+    "custom_1": {
       "type": ["string", "null"],
-      "description": "Maps to Zendesk ticket id via the custom_1 field on the survey blast."
+      "description": "Free-form custom field 1 from the survey blast (`custom1` on sendEmail; CT admin UI configures the per-account meaning)."
     },
-    "technician_name": {
+    "custom_2": {
       "type": ["string", "null"],
-      "description": "Maps to the technician's display name via the custom_2 field on the survey blast. Used downstream to join CSAT to dim_technician."
+      "description": "Free-form custom field 2 from the survey blast."
     },
-    "ticket_subject": {
+    "custom_3": {
       "type": ["string", "null"],
-      "description": "Maps to the Zendesk ticket subject via the custom_3 field."
+      "description": "Free-form custom field 3 from the survey blast."
     },
     "comment": {
       "type": ["string", "null"],

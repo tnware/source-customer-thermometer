@@ -76,9 +76,9 @@ class TestMapFields:
         assert out["response"] == "Gold"
         assert out["temperature_id"] == 1
         assert out["recipient_email"] == "cust@x.com"
-        assert out["ticket_ref"] == "5001"
-        assert out["technician_name"] == "Jane Doe"
-        assert out["ticket_subject"] == "Ticket subject"
+        assert out["custom_1"] == "5001"
+        assert out["custom_2"] == "Jane Doe"
+        assert out["custom_3"] == "Ticket subject"
         assert out["blast_id"] == 42
         assert out["thermometer_id"] == 7
         assert out["response_bounced"] is False
