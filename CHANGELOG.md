@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.1](https://github.com/tnware/source-customer-thermometer/compare/v0.5.0...v0.5.1) (2026-05-14)
+
+
+### Features
+
+* chunk fromDate/toDate windows in 7-day slices ([ca08578](https://github.com/tnware/source-customer-thermometer/commit/ca08578e1efa94b2d28ce34b0296ae19de7ded6e))
+* chunk fromDate/toDate windows in 7-day slices ([17b2911](https://github.com/tnware/source-customer-thermometer/commit/17b2911d1879501ef625bbe7991cf45a5728f27e))
+* pass through custom_1/2/3 raw instead of org-specific aliases ([#5](https://github.com/tnware/source-customer-thermometer/issues/5)) ([1c3273c](https://github.com/tnware/source-customer-thermometer/commit/1c3273cd91d048872bdc90642a8787728c9832c4))
+
 ## [0.5.0](https://github.com/tnware/source-customer-thermometer/compare/v0.4.0...v0.5.0) (2026-05-14)
 
 
