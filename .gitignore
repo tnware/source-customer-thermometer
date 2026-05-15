@@ -22,3 +22,4 @@ catalog_full.json
 config_narrow.json
 secrets/
 *.local.json
+CLAUDE.md
