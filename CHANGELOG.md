@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/tnware/source-customer-thermometer/compare/v0.5.3...v0.5.4) (2026-05-16)
+
+
+### Documentation
+
+* update start_date spec to reflect chunked fetching ([#22](https://github.com/tnware/source-customer-thermometer/issues/22)) ([dc780f0](https://github.com/tnware/source-customer-thermometer/commit/dc780f0c3c544528bcb218306b3fc3f2093e6871))
+
 ## [0.5.3](https://github.com/tnware/source-customer-thermometer/compare/v0.5.2...v0.5.3) (2026-05-14)
 
 
