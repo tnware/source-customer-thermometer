@@ -20,17 +20,22 @@ connectionSpecification:
       type: string
       title: Start Date
       description: >
-        ISO 8601 date (YYYY-MM-DD). ThermometerResponses will be fetched
-        starting from this date on the first sync. Use the earliest date
-        for which CT data exists.
+        ISO 8601 date (YYYY-MM-DD). On the first sync the connector walks
+        forward from this date in 7-day chunks until today, fetching every
+        response in the range. The CustomerThermometer API caps each call
+        at 10,000 records and does not support pagination; a 7-day window
+        keeps each call well under that for any realistic response volume,
+        so an arbitrarily-old start_date is safe. Set it to whenever your
+        CT account first started receiving responses.
 
-        IMPORTANT: The CustomerThermometer API caps each call at 10,000
-        records and does not support pagination. If your first sync covers
-        a date range with more than 10,000 responses the sync will fail
-        loudly (better than silently losing data). To recover, advance
-        start_date so each window is below the cap, sync, then back off
-        start_date and run again. Once the cursor has caught up, ongoing
-        incremental syncs will stay well under the cap.
+        Changing start_date AFTER a successful sync has no effect on its
+        own — the stream's saved cursor takes precedence, and the cursor
+        can only advance forward. To re-fetch responses older than the
+        current cursor, "Clear data" on the stream in the Airbyte UI
+        (which resets the cursor), set the earlier start_date, then run a
+        fresh sync. Downstream incremental models keyed on response_id
+        will MERGE the retroactive rows in cleanly with no manual dbt
+        intervention.
       pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
       examples:
         - "2025-07-01"
